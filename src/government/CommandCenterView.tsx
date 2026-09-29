@@ -56,16 +56,17 @@ export const CommandCenterView: React.FC<CommandCenterViewProps> = ({
   const loadDashboardData = async () => {
     setLoading(true);
     try {
-      const [sumData, incData, anomData, dsData] = await Promise.all([
+      const [sumRes, incRes, anomRes, dsRes] = await Promise.allSettled([
         fetchAnalyticsSummary(),
         fetchIncidents(),
         fetchAnomalies(),
         fetchDataSourcesHealth(),
       ]);
-      setSummary(sumData);
-      setActiveIncidents(incData.filter((i) => i.status !== 'resolved'));
-      setAnomalies(anomData);
-      setDataSources(dsData);
+
+      if (sumRes.status === 'fulfilled') setSummary(sumRes.value);
+      if (incRes.status === 'fulfilled') setActiveIncidents(incRes.value.filter((i) => i.status !== 'resolved'));
+      if (anomRes.status === 'fulfilled') setAnomalies(anomRes.value);
+      if (dsRes.status === 'fulfilled') setDataSources(dsRes.value);
     } catch (err) {
       console.error('Failed to load Command Center telemetry:', err);
     } finally {

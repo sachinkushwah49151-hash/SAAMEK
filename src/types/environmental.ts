@@ -113,7 +113,7 @@ export interface DerivedHotspotMarker {
 
 export interface DataFetchState<T> {
   data: T | null;
-  status: 'idle' | 'loading' | 'success' | 'error' | 'unconfigured';
+  status: 'idle' | 'loading' | 'success' | 'error' | 'unconfigured' | 'empty';
   errorMessage?: string;
   lastUpdated?: Date;
 }

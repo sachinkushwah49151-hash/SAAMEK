@@ -235,6 +235,8 @@ export const GovCleanEnvironmentalMap: React.FC<GovCleanEnvironmentalMapProps> =
                 <span className="text-[10px] text-slate-300 block font-mono">
                   {stations.status === 'success'
                     ? `● Backend Connected | Stations: ${stationsList.length}`
+                    : stations.status === 'empty'
+                    ? '● Operational | 0 stations in bounding box'
                     : stations.status === 'loading'
                     ? '● Connecting to backend...'
                     : '● Backend Offline / Error'}
@@ -283,7 +285,7 @@ export const GovCleanEnvironmentalMap: React.FC<GovCleanEnvironmentalMapProps> =
                     ? `● Backend Connected | ${weatherData.temperature}°C, ${weatherData.windSpeed} km/h`
                     : weather.status === 'loading'
                     ? '● Connecting to backend...'
-                    : '● Backend Offline / No Data'}
+                    : '● Weather data unavailable'}
                 </span>
               </div>
             </div>
@@ -1353,6 +1355,8 @@ export const GovCleanEnvironmentalMap: React.FC<GovCleanEnvironmentalMapProps> =
           <span className="text-slate-500 block text-[11px]">
             {stations.status === 'success'
               ? `${stationsList.length} monitoring stations`
+              : stations.status === 'empty'
+              ? '0 monitoring stations (clean baseline)'
               : stations.status === 'loading'
               ? 'Connecting to backend...'
               : 'Backend offline / error'}

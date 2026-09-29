@@ -66,21 +66,46 @@ export const GovIntelligenceMapView: React.FC<GovIntelligenceMapViewProps> = ({
   const fetchAllCityTelemetry = useCallback(async () => {
     setIsRefreshing(true);
     try {
-      const [weatherRes, stationsRes, firesRes, incList, crList] = await Promise.all([
-        fetchBackendWeather(city.name.toLowerCase()),
-        fetchBackendAQStations(city.name.toLowerCase()),
-        fetchBackendFires(city.name.toLowerCase()),
+      const cityName = city.name.toLowerCase();
+      const [weatherRes, stationsRes, firesRes, incRes, crRes] = await Promise.allSettled([
+        fetchBackendWeather(cityName),
+        fetchBackendAQStations(cityName),
+        fetchBackendFires(cityName),
         fetchIncidents(),
         fetchCitizenReports(),
       ]);
 
-      setWeather({ data: weatherRes, status: 'success' });
-      setStations({ data: stationsRes, status: 'success' });
-      setFires({ data: firesRes, status: 'success' });
-      setIncidents(incList);
-      setCitizenReports(crList);
-      setHotspots([]);
+      // Weather state
+      if (weatherRes.status === 'fulfilled' && weatherRes.value) {
+        setWeather({ data: weatherRes.value, status: 'success' });
+      } else {
+        setWeather({ data: null, status: 'error', errorMessage: 'Weather data unavailable' });
+      }
 
+      // AQ Stations state
+      if (stationsRes.status === 'fulfilled') {
+        const stationList = stationsRes.value || [];
+        setStations({ data: stationList, status: stationList.length > 0 ? 'success' : 'empty' });
+      } else {
+        setStations({ data: [], status: 'error', errorMessage: 'Station telemetry unavailable' });
+      }
+
+      // NASA Fires state
+      if (firesRes.status === 'fulfilled') {
+        setFires({ data: firesRes.value || [], status: 'success' });
+      } else {
+        setFires({ data: [], status: 'error', errorMessage: 'Satellite fire telemetry unavailable' });
+      }
+
+      // Incidents & Citizen Reports
+      if (incRes.status === 'fulfilled') {
+        setIncidents(incRes.value || []);
+      }
+      if (crRes.status === 'fulfilled') {
+        setCitizenReports(crRes.value || []);
+      }
+
+      setHotspots([]);
       setLastSuccessfulUpdate(new Date());
     } catch (err: any) {
       console.error(`[SAAMEK Backend Client] Error fetching from backend:`, err);

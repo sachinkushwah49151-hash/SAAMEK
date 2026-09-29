@@ -423,15 +423,16 @@ export async function fetchBackendFires(city: string = 'gwalior'): Promise<FireD
   }));
 }
 
-export async function fetchBackendWeather(city: string = 'gwalior'): Promise<WeatherData> {
+export async function fetchBackendWeather(city: string = 'gwalior'): Promise<WeatherData | null> {
   const url = `${API_BASE_URL}/api/environment/${city}/weather`;
   const res = await fetch(url);
   if (!res.ok) {
+    if (res.status === 404) return null;
     throw new Error(`HTTP ${res.status}: Failed to fetch weather data from backend`);
   }
   const data: BackendWeatherObservation | null = await res.json();
   if (!data) {
-    throw new Error('No weather observation recorded for city');
+    return null;
   }
 
   const windDeg = data.wind_direction != null ? data.wind_direction : 0;

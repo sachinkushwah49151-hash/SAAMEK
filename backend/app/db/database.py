@@ -60,7 +60,14 @@ def _init_engine():
                 pass
             return pg_engine
         except Exception as e:
-            fallback_url = "sqlite:///./saamek_dev.db"
+            from app.core.config import BASE_DIR
+            if (BASE_DIR / "saamek_dev.db").exists():
+                fallback_db_path = (BASE_DIR / "saamek_dev.db").resolve()
+            elif (BASE_DIR.parent / "saamek_dev.db").exists():
+                fallback_db_path = (BASE_DIR.parent / "saamek_dev.db").resolve()
+            else:
+                fallback_db_path = (BASE_DIR / "saamek_dev.db").resolve()
+            fallback_url = f"sqlite:///{fallback_db_path.as_posix()}"
             logger.warning(
                 f"PostgreSQL connection to {db_url} unavailable ({e}). "
                 f"Falling back to local development database ({fallback_url})."

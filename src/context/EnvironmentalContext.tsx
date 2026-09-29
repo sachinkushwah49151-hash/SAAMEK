@@ -10,10 +10,11 @@ import type {
 } from '../types/environmental';
 import { EnvironmentalContext } from './environmentalContextDef';
 import { reverseGeocode } from '../services/geocodingService';
-import { fetchRealWeatherData } from '../services/weatherService';
-import { fetchRealAirQualityData } from '../services/airQualityService';
-import { fetchRealAQStations } from '../services/stationService';
-import { fetchRealSatelliteFires } from '../services/fireService';
+import {
+  fetchBackendWeather,
+  fetchBackendAQStations,
+  fetchBackendFires,
+} from '../services/saamekBackendService';
 
 // Default national capital coordinates used purely as fallback if user has not yet permitted geolocation
 const FALLBACK_DEFAULT_COORDS = {
@@ -54,76 +55,98 @@ export const EnvironmentalProvider: React.FC<{ children: React.ReactNode }> = ({
   const [lastRefreshedAt, setLastRefreshedAt] = useState<Date | null>(null);
 
   // Fetch all environmental data for given coordinates
-  const fetchAllTelemetry = useCallback(async (lat: number, lon: number) => {
+  const fetchAllTelemetry = useCallback(async (_lat: number, _lon: number) => {
     setIsRefreshing(true);
 
+    const [weatherRes, stationsRes, firesRes] = await Promise.allSettled([
+      fetchBackendWeather(),
+      fetchBackendAQStations(),
+      fetchBackendFires(),
+    ]);
+
     // 1. Weather
-    setWeather((prev) => ({ ...prev, status: 'loading' }));
-    fetchRealWeatherData(lat, lon)
-      .then((data) => {
-        setWeather({
-          data,
-          status: 'success',
-          lastUpdated: new Date(),
-        });
-      })
-      .catch((err) => {
-        setWeather({
-          data: null,
-          status: 'error',
-          errorMessage: err.message || 'Weather telemetry temporarily unavailable',
-          lastUpdated: new Date(),
-        });
+    if (weatherRes.status === 'fulfilled' && weatherRes.value) {
+      setWeather({
+        data: weatherRes.value,
+        status: 'success',
+        lastUpdated: new Date(),
       });
+    } else {
+      setWeather({
+        data: null,
+        status: 'error',
+        errorMessage: 'Weather telemetry unavailable',
+        lastUpdated: new Date(),
+      });
+    }
 
-    // 2. Air Quality
-    setAirQuality((prev) => ({ ...prev, status: 'loading' }));
-    fetchRealAirQualityData(lat, lon)
-      .then((data) => {
-        setAirQuality({
-          data,
-          status: 'success',
-          lastUpdated: new Date(),
-        });
-      })
-      .catch((err) => {
-        setAirQuality({
-          data: null,
-          status: 'error',
-          errorMessage: err.message || 'Air quality telemetry unavailable',
-          lastUpdated: new Date(),
-        });
+    // 2. Ambient Stations & Derived Air Quality
+    let currentStations: AQStationMarker[] = [];
+    if (stationsRes.status === 'fulfilled') {
+      currentStations = stationsRes.value || [];
+      setStations({
+        data: currentStations,
+        status: currentStations.length > 0 ? 'success' : 'empty',
+        lastUpdated: new Date(),
       });
+    } else {
+      setStations({
+        data: [],
+        status: 'error',
+        errorMessage: 'Station telemetry unavailable',
+        lastUpdated: new Date(),
+      });
+    }
 
-    // 3. Ambient Stations
-    setStations((prev) => ({ ...prev, status: 'loading' }));
-    fetchRealAQStations(lat, lon)
-      .then((res) => {
-        setStations(res);
-      })
-      .catch((err) => {
-        setStations({
-          data: [],
-          status: 'error',
-          errorMessage: err.message || 'Station feed unavailable',
-          lastUpdated: new Date(),
-        });
+    // Derived Air Quality from primary station
+    if (currentStations.length > 0) {
+      const primarySt = currentStations[0];
+      const pm25 = primarySt.pm25 ?? 0;
+      const pm10 = primarySt.pm10 ?? 0;
+      setAirQuality({
+        data: {
+          usAqi: Math.round(pm25 * 2.1),
+          pm25,
+          pm10,
+          nitrogenDioxide: primarySt.no2,
+          sulphurDioxide: primarySt.so2,
+          carbonMonoxide: primarySt.co,
+          ozone: primarySt.o3,
+          category: pm25 > 120 ? 'Very Poor' : pm25 > 60 ? 'Poor' : pm25 > 30 ? 'Moderate' : 'Good',
+          categoryColor: pm25 > 120 ? '#dc2626' : pm25 > 60 ? '#ea580c' : pm25 > 30 ? '#d97706' : '#16a34a',
+          categoryBg: pm25 > 120 ? '#fef2f2' : pm25 > 60 ? '#fff7ed' : pm25 > 30 ? '#fffbeb' : '#f0fdf4',
+          healthAdvisory: 'Official telemetry provided via OpenAQ ambient monitoring network.',
+          timestamp: primarySt.measurementTime,
+          source: 'OpenAQ',
+        },
+        status: 'success',
+        lastUpdated: new Date(),
       });
+    } else {
+      setAirQuality({
+        data: null,
+        status: 'empty',
+        errorMessage: 'No current air quality measurements from monitoring stations',
+        lastUpdated: new Date(),
+      });
+    }
 
-    // 4. Satellite Fires (NASA FIRMS)
-    setFires((prev) => ({ ...prev, status: 'loading' }));
-    fetchRealSatelliteFires(lat, lon)
-      .then((res) => {
-        setFires(res);
-      })
-      .catch((err) => {
-        setFires({
-          data: [],
-          status: 'error',
-          errorMessage: err.message || 'Satellite fire telemetry unavailable',
-          lastUpdated: new Date(),
-        });
+    // 3. Satellite Fires
+    if (firesRes.status === 'fulfilled') {
+      const firesData = firesRes.value || [];
+      setFires({
+        data: firesData,
+        status: 'success',
+        lastUpdated: new Date(),
       });
+    } else {
+      setFires({
+        data: [],
+        status: 'error',
+        errorMessage: 'Satellite fire telemetry unavailable',
+        lastUpdated: new Date(),
+      });
+    }
 
     setLastRefreshedAt(new Date());
     setIsRefreshing(false);
