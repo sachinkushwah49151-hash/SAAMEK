@@ -7,7 +7,7 @@ import { RoleSelector } from '../components/RoleSelector';
 import { LoginForm } from '../components/LoginForm';
 import { SecurityNotice } from '../components/SecurityNotice';
 import { Footer } from '../components/Footer';
-import { Lock } from 'lucide-react';
+import { Lock, ShieldCheck } from 'lucide-react';
 
 interface LoginPageProps {
   onCitizenLogin?: (lang: SupportedLanguage) => void;
@@ -21,7 +21,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onCitizenLogin, onGovLogin
   const t = TRANSLATIONS[language];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f4f6f9] text-slate-900 selection:bg-[#003366] selection:text-white">
+    <div className="min-h-screen flex flex-col bg-[#f0f4f8] text-slate-900 selection:bg-[#003366] selection:text-white">
       {/* Official Government Top Bar */}
       <OfficialTopBar
         t={t}
@@ -37,26 +37,32 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onCitizenLogin, onGovLogin
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-6 sm:py-8">
-        <div className="w-full max-w-[460px]">
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-8 sm:py-12">
+        <div className="w-full max-w-[480px]">
           {/* Main Login Card */}
-          <div className="bg-white border border-slate-200 rounded-md shadow-xs overflow-hidden">
+          <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xl overflow-hidden backdrop-blur-sm">
             {/* Card Header Strip */}
-            <div className="bg-[#003366] px-5 py-3 text-white flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Lock className="w-4 h-4 text-slate-200" />
-                <h2 className="text-sm sm:text-[15px] font-bold tracking-wide">
-                  {t.gatewayTitle}
-                </h2>
+            <div className="bg-gradient-to-r from-[#003366] via-[#0a2c52] to-[#0c3866] px-6 py-4 text-white flex items-center justify-between">
+              <div className="flex items-center space-x-2.5">
+                <div className="p-1.5 bg-white/10 rounded-lg">
+                  <Lock className="w-4 h-4 text-sky-300" />
+                </div>
+                <div>
+                  <h2 className="text-sm sm:text-[15px] font-black tracking-wide leading-none">
+                    {t.gatewayTitle}
+                  </h2>
+                  <span className="text-[10px] text-sky-200/80 font-mono mt-0.5 block">National Environmental Grid</span>
+                </div>
               </div>
-              <span className="text-xs font-semibold bg-[#0f294a] text-slate-100 px-2.5 py-0.5 rounded border border-[#2b4c7e]">
+              <span className="text-[11px] font-bold bg-white/10 text-white px-3 py-1 rounded-full border border-white/20 flex items-center gap-1">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                 {t.secureAccess}
               </span>
             </div>
 
             {/* Card Body */}
-            <div className="p-5 sm:p-6 space-y-4">
-              {/* Compact Two-Button Role Selector */}
+            <div className="p-6 sm:p-7 space-y-5">
+              {/* Two-Button Role Selector */}
               <RoleSelector
                 selectedRole={selectedRole}
                 onSelectRole={setSelectedRole}
@@ -68,7 +74,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onCitizenLogin, onGovLogin
                   <div className="w-full border-t border-slate-200" />
                 </div>
                 <div className="relative flex justify-center text-xs">
-                  <span className="bg-white px-3 text-slate-500 font-semibold uppercase tracking-wider">
+                  <span className="bg-white px-3 text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
                     {t.enterCredentials}
                   </span>
                 </div>
@@ -89,10 +95,10 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onCitizenLogin, onGovLogin
           </div>
 
           {/* Quick Help / System Status Note */}
-          <div className="mt-3 text-center text-xs text-slate-500 flex items-center justify-center gap-2">
+          <div className="mt-4 text-center text-[11px] text-slate-500 flex items-center justify-center gap-2 font-mono">
             <span>{t.portalVersion}</span>
             <span>•</span>
-            <span>{t.sslEncrypted}</span>
+            <span className="text-emerald-700 font-semibold">{t.sslEncrypted}</span>
             <span>•</span>
             <span>{t.serverTime}</span>
           </div>

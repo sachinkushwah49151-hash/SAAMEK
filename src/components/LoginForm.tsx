@@ -72,11 +72,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3.5" noValidate>
+    <form onSubmit={handleSubmit} className="space-y-4" noValidate>
       {feedback && (
         <div
           role="alert"
-          className={`p-2.5 rounded-md text-xs sm:text-sm flex items-start space-x-2 border transition-all ${
+          className={`p-3 rounded-xl text-xs sm:text-[13px] flex items-start space-x-2 border transition-all ${
             feedback.type === 'error'
               ? 'bg-red-50 text-red-800 border-red-200'
               : 'bg-emerald-50 text-emerald-800 border-emerald-200'
@@ -103,12 +103,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       <div className="space-y-1.5">
         <label
           htmlFor="identifier"
-          className="block text-xs sm:text-[13px] font-bold text-slate-800 tracking-wide"
+          className="block text-[12px] font-bold text-slate-700 tracking-wide font-mono"
         >
-          {t.userIdLabel} <span className="text-red-600">*</span>
+          {t.userIdLabel} <span className="text-red-500">*</span>
         </label>
         <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
             <Mail className="w-4 h-4" />
           </div>
           <input
@@ -123,7 +123,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             placeholder={
               selectedRole === 'government' ? t.govPlaceholder : t.citizenPlaceholder
             }
-            className="w-full pl-9 pr-3 py-2 text-sm bg-white text-slate-900 border border-slate-300 rounded shadow-2xs focus:outline-none focus:ring-1 focus:ring-[#003366] focus:border-[#003366] placeholder-slate-400 transition-colors"
+            className="w-full pl-10 pr-3.5 py-2.5 text-sm bg-slate-50/60 text-slate-900 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#003366]/20 focus:border-[#003366] placeholder-slate-400 transition-all shadow-2xs"
             autoComplete="username"
           />
         </div>
@@ -133,12 +133,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       <div className="space-y-1.5">
         <label
           htmlFor="password"
-          className="block text-xs sm:text-[13px] font-bold text-slate-800 tracking-wide"
+          className="block text-[12px] font-bold text-slate-700 tracking-wide font-mono"
         >
-          {t.passwordLabel} <span className="text-red-600">*</span>
+          {t.passwordLabel} <span className="text-red-500">*</span>
         </label>
         <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+          <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
             <Lock className="w-4 h-4" />
           </div>
           <input
@@ -151,13 +151,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({
               if (feedback) setFeedback(null);
             }}
             placeholder={t.passwordPlaceholder}
-            className="w-full pl-9 pr-9 py-2 text-sm bg-white text-slate-900 border border-slate-300 rounded shadow-2xs focus:outline-none focus:ring-1 focus:ring-[#003366] focus:border-[#003366] placeholder-slate-400 transition-colors"
+            className="w-full pl-10 pr-10 py-2.5 text-sm bg-slate-50/60 text-slate-900 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#003366]/20 focus:border-[#003366] placeholder-slate-400 transition-all shadow-2xs"
             autoComplete="current-password"
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
+            className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
             aria-label={showPassword ? 'Hide password' : 'Show password'}
           >
             {showPassword ? (
@@ -170,10 +170,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       </div>
 
       {/* Primary Login Button */}
-      <div className="pt-1.5">
+      <div className="pt-2">
         <button
           type="submit"
-          className="w-full flex items-center justify-center gap-2 bg-[#003366] hover:bg-[#002244] active:bg-[#001933] text-white text-sm sm:text-[15px] font-semibold py-2.5 px-4 rounded shadow-2xs transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#003366] focus:ring-offset-1"
+          className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#003366] to-[#0a2c52] hover:from-[#002852] hover:to-[#082240] text-white text-sm sm:text-[15px] font-bold py-3 px-4 rounded-xl shadow-md transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#003366]/30 active:scale-[0.99]"
         >
           <LogIn className="w-4 h-4" />
           <span>{t.loginButton}</span>

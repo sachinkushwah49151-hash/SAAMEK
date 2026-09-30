@@ -129,17 +129,17 @@ export const CitizenMapView: React.FC = () => {
   return (
     <div className="space-y-4">
       {/* Map Header & Controls */}
-      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-blue-50 text-[#003366] border border-blue-100">
-            <MapIcon className="w-5 h-5" />
+      <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3.5">
+          <div className="p-2.5 rounded-xl bg-sky-50 text-sky-700 border border-sky-100">
+            <MapIcon className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-base sm:text-lg font-bold text-slate-900">
+            <h1 className="text-lg font-black text-slate-900 leading-snug">
               Gwalior Environmental Map
             </h1>
             <p className="text-xs text-slate-500">
-              Official OpenAQ ground stations, verified incidents, and civic reports
+              Live OpenAQ ground stations, official verified incidents, and community submissions
             </p>
           </div>
         </div>
@@ -148,9 +148,9 @@ export const CitizenMapView: React.FC = () => {
         <div className="flex flex-wrap items-center gap-2 text-xs">
           <button
             onClick={() => setShowStations(!showStations)}
-            className={`px-3 py-1.5 rounded-lg border font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-full border font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
               showStations
-                ? 'bg-[#003366] text-white border-[#003366]'
+                ? 'bg-[#003366] text-white border-[#003366] shadow-sm'
                 : 'bg-slate-50 text-slate-600 border-slate-200'
             }`}
           >
@@ -158,9 +158,9 @@ export const CitizenMapView: React.FC = () => {
           </button>
           <button
             onClick={() => setShowIncidents(!showIncidents)}
-            className={`px-3 py-1.5 rounded-lg border font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-full border font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
               showIncidents
-                ? 'bg-rose-600 text-white border-rose-600'
+                ? 'bg-rose-600 text-white border-rose-600 shadow-sm'
                 : 'bg-slate-50 text-slate-600 border-slate-200'
             }`}
           >
@@ -168,9 +168,9 @@ export const CitizenMapView: React.FC = () => {
           </button>
           <button
             onClick={() => setShowReports(!showReports)}
-            className={`px-3 py-1.5 rounded-lg border font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-full border font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
               showReports
-                ? 'bg-amber-500 text-slate-950 border-amber-500'
+                ? 'bg-amber-500 text-slate-950 border-amber-500 shadow-sm'
                 : 'bg-slate-50 text-slate-600 border-slate-200'
             }`}
           >
@@ -179,7 +179,7 @@ export const CitizenMapView: React.FC = () => {
           <button
             onClick={loadMapData}
             disabled={loading}
-            className="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all cursor-pointer"
+            className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all cursor-pointer border border-slate-200"
             title="Refresh map telemetry"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
@@ -188,7 +188,7 @@ export const CitizenMapView: React.FC = () => {
       </div>
 
       {/* Interactive Map */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden relative" style={{ height: '580px' }}>
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden relative" style={{ height: '620px' }}>
         <MapContainer
           center={[GWALIOR_COORDINATES.latitude, GWALIOR_COORDINATES.longitude]}
           zoom={12}
@@ -209,9 +209,9 @@ export const CitizenMapView: React.FC = () => {
                 icon={createStationIcon()}
               >
                 <Popup>
-                  <div className="p-1 space-y-2 max-w-xs">
-                    <div className="font-bold text-slate-900 text-sm border-b border-slate-200 pb-1 flex items-center gap-1">
-                      <span className="text-base">📡</span> {st.name}
+                  <div className="p-1 space-y-2 max-w-xs font-sans">
+                    <div className="font-bold text-slate-900 text-sm border-b border-slate-200 pb-1 flex items-center gap-1.5">
+                      <span>📡</span> {st.name}
                     </div>
                     <div className="text-xs text-slate-600">
                       <strong>Provider:</strong> {st.provider}
@@ -223,17 +223,17 @@ export const CitizenMapView: React.FC = () => {
                     <div className="text-xs font-bold text-slate-700 mt-2">Sensor Measurements:</div>
                     <div className="grid grid-cols-2 gap-1.5 text-xs">
                       {(st.pollutantList || []).map((pollutant, idx) => (
-                        <div key={idx} className="bg-slate-50 p-1.5 rounded border border-slate-200">
-                          <div className="font-semibold text-slate-800">
+                        <div key={idx} className="bg-slate-50 p-1.5 rounded-lg border border-slate-200">
+                          <div className="font-semibold text-slate-800 text-[11px]">
                             {formatPollutantName(pollutant.parameter || pollutant.name || 'Pollutant')}
                           </div>
-                          <div className="font-bold text-[#003366]">
+                          <div className="font-bold text-[#003366] font-mono">
                             {pollutant.value != null ? `${pollutant.value.toFixed(1)} ${pollutant.unit}` : 'No data'}
                           </div>
                         </div>
                       ))}
                     </div>
-                    <div className="text-[10px] text-slate-400">
+                    <div className="text-[10px] text-slate-400 font-mono">
                       Sync: {formatTimestamp(st.measurementTime)}
                     </div>
                   </div>
@@ -250,8 +250,8 @@ export const CitizenMapView: React.FC = () => {
                 icon={createIncidentIcon(inc.severity)}
               >
                 <Popup>
-                  <div className="p-1 space-y-2 max-w-xs">
-                    <div className="font-bold text-rose-700 text-sm border-b border-slate-200 pb-1 flex items-center gap-1">
+                  <div className="p-1 space-y-2 max-w-xs font-sans">
+                    <div className="font-bold text-rose-700 text-sm border-b border-slate-200 pb-1 flex items-center gap-1.5">
                       <span>⚠️</span> {inc.title}
                     </div>
                     <div className="text-xs text-slate-600">
@@ -260,8 +260,8 @@ export const CitizenMapView: React.FC = () => {
                     <div className="text-xs text-slate-600">
                       <strong>Severity:</strong> <span className="capitalize font-semibold text-rose-600">{inc.severity}</span>
                     </div>
-                    <p className="text-xs text-slate-700">{inc.description}</p>
-                    <div className="text-[10px] text-slate-400">
+                    <p className="text-xs text-slate-700 leading-relaxed">{inc.description}</p>
+                    <div className="text-[10px] text-slate-400 font-mono">
                       Incident Code: {inc.incident_id || `INC-${inc.id}`}
                     </div>
                   </div>
@@ -278,7 +278,7 @@ export const CitizenMapView: React.FC = () => {
                 icon={createReportIcon(rep.status)}
               >
                 <Popup>
-                  <div className="p-1 space-y-1.5 max-w-xs">
+                  <div className="p-1 space-y-1.5 max-w-xs font-sans">
                     <div className="font-bold text-slate-900 text-xs border-b border-slate-200 pb-1">
                       📍 {rep.title || 'Citizen Report'}
                     </div>
@@ -289,7 +289,7 @@ export const CitizenMapView: React.FC = () => {
                       <strong>Status:</strong> <span className="capitalize font-semibold">{rep.status.replace(/_/g, ' ')}</span>
                     </div>
                     <p className="text-[11px] text-slate-700 line-clamp-2">{rep.description}</p>
-                    <div className="text-[10px] text-slate-400">
+                    <div className="text-[10px] text-slate-400 font-mono">
                       Ref: {rep.report_id || `CR-${String(rep.id).substring(0, 8)}`}
                     </div>
                   </div>
@@ -299,20 +299,20 @@ export const CitizenMapView: React.FC = () => {
         </MapContainer>
 
         {/* Bottom Legend */}
-        <div className="absolute bottom-4 left-4 z-[1000] bg-white/95 backdrop-blur-xs p-3 rounded-lg border border-slate-200 shadow-md text-xs space-y-1.5">
-          <div className="font-bold text-slate-800 text-[11px] uppercase tracking-wider mb-1">
+        <div className="absolute bottom-5 left-5 z-[1000] bg-white/95 backdrop-blur-md p-4 rounded-xl border border-slate-200 shadow-md text-xs space-y-2">
+          <div className="font-bold text-slate-800 text-[11px] uppercase tracking-wider font-mono">
             Map Legend
           </div>
-          <div className="flex items-center gap-2 text-slate-700">
-            <span className="w-3 h-3 rounded-full bg-[#003366]"></span>
+          <div className="flex items-center gap-2 text-slate-700 font-medium">
+            <span className="w-3 h-3 rounded-full bg-[#003366]" />
             <span>OpenAQ Monitoring Station</span>
           </div>
-          <div className="flex items-center gap-2 text-slate-700">
-            <span className="w-3 h-3 rounded-full bg-rose-600"></span>
+          <div className="flex items-center gap-2 text-slate-700 font-medium">
+            <span className="w-3 h-3 rounded-full bg-rose-600" />
             <span>Official Environmental Incident</span>
           </div>
-          <div className="flex items-center gap-2 text-slate-700">
-            <span className="w-3 h-3 rounded-full bg-amber-500"></span>
+          <div className="flex items-center gap-2 text-slate-700 font-medium">
+            <span className="w-3 h-3 rounded-full bg-amber-500" />
             <span>Citizen Incident Report</span>
           </div>
         </div>

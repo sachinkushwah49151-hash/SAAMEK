@@ -148,28 +148,30 @@ export const ReportIssueView: React.FC<ReportIssueViewProps> = ({
 
   if (submittedReport) {
     return (
-      <div className="max-w-2xl mx-auto bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 text-center my-6">
-        <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-200">
+      <div className="max-w-2xl mx-auto bg-white rounded-2xl border border-slate-200 shadow-xl p-8 sm:p-10 text-center my-6 space-y-6">
+        <div className="w-18 h-18 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto border-2 border-emerald-200 shadow-sm">
           <CheckCircle2 className="w-10 h-10" />
         </div>
 
-        <h2 className="text-2xl font-bold text-slate-900 mb-1">
-          Environmental Report Submitted Successfully!
-        </h2>
-        <p className="text-sm text-slate-500 mb-6">
-          Your report has been received by the SAAMEK Gwalior Environmental Intelligence unit.
-        </p>
+        <div>
+          <h2 className="text-2xl font-black text-slate-900 mb-1.5">
+            Environmental Report Submitted Successfully!
+          </h2>
+          <p className="text-sm text-slate-500 max-w-md mx-auto">
+            Your report has been received and indexed by the SAAMEK Gwalior Environmental Intelligence unit.
+          </p>
+        </div>
 
-        <div className="bg-slate-50 rounded-xl p-5 border border-slate-200 text-left mb-6 space-y-2">
-          <div className="flex justify-between items-center text-xs text-slate-500 border-b border-slate-200 pb-2">
-            <span>Reference Report ID</span>
-            <span className="font-mono font-bold text-[#003366] text-sm">
+        <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200 text-left space-y-2.5">
+          <div className="flex justify-between items-center text-xs text-slate-500 border-b border-slate-200 pb-2.5">
+            <span className="font-medium">Reference Report ID</span>
+            <span className="font-mono font-bold text-[#003366] text-sm bg-sky-50 border border-sky-200 px-2 py-0.5 rounded">
               {submittedReport.report_id || submittedReport.id}
             </span>
           </div>
           <div className="flex justify-between items-center text-xs text-slate-600">
             <span>Incident Type</span>
-            <span className="font-semibold text-slate-900 capitalize">
+            <span className="font-bold text-slate-900 capitalize">
               {submittedReport.report_type?.replace(/_/g, ' ')}
             </span>
           </div>
@@ -179,23 +181,23 @@ export const ReportIssueView: React.FC<ReportIssueViewProps> = ({
           </div>
           <div className="flex justify-between items-center text-xs text-slate-600">
             <span>Current Status</span>
-            <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold">
+            <span className="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold border border-amber-300">
               Pending Verification
             </span>
           </div>
         </div>
 
-        <div className="p-3.5 bg-blue-50 text-blue-900 rounded-lg text-xs flex items-start gap-2.5 text-left mb-6 border border-blue-100">
-          <ShieldCheck className="w-4 h-4 text-[#003366] shrink-0 mt-0.5" />
-          <div>
-            <strong>What happens next?</strong> SAAMEK automatically correlates your report with real-time ground sensor readings (OpenAQ) and satellite passes (NASA FIRMS). An officer will triage and initiate field response if verified.
+        <div className="p-4 bg-sky-50/80 text-sky-950 rounded-xl text-xs flex items-start gap-3 text-left border border-sky-200">
+          <ShieldCheck className="w-5 h-5 text-sky-700 shrink-0 mt-0.5" />
+          <div className="leading-relaxed">
+            <strong>What happens next?</strong> SAAMEK automatically cross-references your report with real-time ground sensor readings (OpenAQ) and satellite thermal passes (NASA FIRMS). Official authorities will review evidence and initiate field response.
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
           <button
             onClick={() => onNavigateTab('my-reports')}
-            className="px-6 py-2.5 rounded-xl bg-[#003366] text-white font-bold text-sm shadow-sm hover:bg-[#002244] transition-all cursor-pointer"
+            className="px-7 py-3 rounded-xl bg-[#003366] text-white font-bold text-sm shadow-md hover:bg-[#002244] transition-all cursor-pointer"
           >
             Track in My Reports
           </button>
@@ -206,7 +208,7 @@ export const ReportIssueView: React.FC<ReportIssueViewProps> = ({
               setDescription('');
               setImageUrl(null);
             }}
-            className="px-6 py-2.5 rounded-xl bg-slate-100 text-slate-800 font-semibold text-sm hover:bg-slate-200 transition-all cursor-pointer border border-slate-200"
+            className="px-6 py-3 rounded-xl bg-slate-100 text-slate-700 font-semibold text-sm hover:bg-slate-200 transition-all cursor-pointer border border-slate-200"
           >
             Submit Another Report
           </button>
@@ -217,35 +219,35 @@ export const ReportIssueView: React.FC<ReportIssueViewProps> = ({
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
-      {/* Header Info */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-xs">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="p-2.5 rounded-xl bg-amber-50 text-amber-700 border border-amber-200">
+      {/* ===== HERO HEADER ===== */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0a1628] via-[#0f2744] to-[#0a1e3d] shadow-xl p-6 sm:p-8">
+        <div className="flex items-center gap-3.5">
+          <div className="p-3 bg-amber-400/20 text-amber-300 rounded-xl border border-amber-400/30">
             <FilePlus className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-slate-900">
+            <h1 className="text-xl sm:text-2xl font-black text-white">
               Report an Environmental Incident
             </h1>
-            <p className="text-xs text-slate-500">
-              Gwalior Environmental Vigilance Portal • Direct submission to Government Command Center
+            <p className="text-xs sm:text-sm text-slate-300 mt-0.5">
+              Gwalior Environmental Vigilance Portal • Direct transmission to Official Command Center
             </p>
           </div>
         </div>
       </div>
 
       {errorMessage && (
-        <div className="p-4 bg-rose-50 border border-rose-200 text-rose-800 rounded-xl text-xs flex items-center gap-2">
+        <div className="p-4 bg-rose-50 border border-rose-300 text-rose-800 rounded-xl text-xs flex items-center gap-2.5">
           <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
           <span>{errorMessage}</span>
         </div>
       )}
 
       {/* Main Report Form */}
-      <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-slate-200 p-6 shadow-xs space-y-6">
+      <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-7">
         {/* 1. Category Selection */}
-        <div>
-          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+        <div className="space-y-3">
+          <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider font-mono">
             1. Select Incident Type <span className="text-rose-500">*</span>
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -256,22 +258,22 @@ export const ReportIssueView: React.FC<ReportIssueViewProps> = ({
                   key={cat.id}
                   type="button"
                   onClick={() => setReportType(cat.id)}
-                  className={`p-3.5 rounded-xl border text-left flex items-start gap-3 transition-all cursor-pointer ${
+                  className={`p-4 rounded-xl border text-left flex items-start gap-3 transition-all cursor-pointer ${
                     isSelected
-                      ? 'border-[#003366] bg-blue-50/70 ring-2 ring-[#003366]/20'
+                      ? 'border-[#003366] bg-sky-50/70 ring-2 ring-[#003366]/20 shadow-xs'
                       : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50/50'
                   }`}
                 >
                   <div
-                    className={`p-2 rounded-lg shrink-0 ${
-                      isSelected ? 'bg-[#003366] text-white' : 'bg-slate-100 text-slate-700'
+                    className={`p-2.5 rounded-xl shrink-0 ${
+                      isSelected ? 'bg-[#003366] text-white shadow-2xs' : 'bg-slate-100 text-slate-600'
                     }`}
                   >
                     {cat.icon}
                   </div>
                   <div>
                     <div className="text-xs font-bold text-slate-900">{cat.label}</div>
-                    <div className="text-[11px] text-slate-500 mt-0.5 leading-tight">{cat.desc}</div>
+                    <div className="text-[11px] text-slate-500 mt-1 leading-snug">{cat.desc}</div>
                   </div>
                 </button>
               );
@@ -280,9 +282,9 @@ export const ReportIssueView: React.FC<ReportIssueViewProps> = ({
         </div>
 
         {/* 2. Incident Summary & Details */}
-        <div className="space-y-4">
+        <div className="space-y-4 pt-2 border-t border-slate-100">
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 font-mono">
               2. Incident Title / Summary <span className="text-rose-500">*</span>
             </label>
             <input
@@ -291,12 +293,12 @@ export const ReportIssueView: React.FC<ReportIssueViewProps> = ({
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Thick smoke from open waste burning near market area"
               required
-              className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-[#003366] focus:bg-white"
+              className="w-full px-4 py-2.5 text-xs bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#003366]/20 focus:border-[#003366] focus:bg-white transition-all"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 font-mono">
               Detailed Observation <span className="text-rose-500">*</span>
             </label>
             <textarea
@@ -305,29 +307,29 @@ export const ReportIssueView: React.FC<ReportIssueViewProps> = ({
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Describe what you see: size of the smoke plume, burning materials, affected neighborhood, smell, duration, etc."
               required
-              className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-[#003366] focus:bg-white resize-none"
+              className="w-full px-4 py-2.5 text-xs bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#003366]/20 focus:border-[#003366] focus:bg-white transition-all resize-none"
             />
           </div>
         </div>
 
         {/* 3. Location & Coordinates */}
-        <div className="space-y-3">
-          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+        <div className="space-y-3.5 pt-2 border-t border-slate-100">
+          <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider font-mono">
             3. Location Details (Gwalior, MP) <span className="text-rose-500">*</span>
           </label>
 
           {/* Quick Landmark Chips */}
           <div>
-            <span className="text-[11px] text-slate-500 font-medium">Quick Landmarks:</span>
+            <span className="text-[11px] text-slate-500 font-semibold">Quick Landmarks:</span>
             <div className="flex flex-wrap gap-1.5 mt-1.5">
               {GWALIOR_LANDMARKS.map((lm) => (
                 <button
                   key={lm.name}
                   type="button"
                   onClick={() => handleSelectLandmark(lm)}
-                  className={`text-[11px] px-2.5 py-1 rounded-full border transition-all cursor-pointer ${
+                  className={`text-[11px] px-3 py-1 rounded-full border transition-all cursor-pointer ${
                     locationName === lm.name
-                      ? 'bg-[#003366] text-white border-[#003366]'
+                      ? 'bg-[#003366] text-white border-[#003366] font-bold shadow-2xs'
                       : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'
                   }`}
                 >
@@ -347,7 +349,7 @@ export const ReportIssueView: React.FC<ReportIssueViewProps> = ({
                 value={locationName}
                 onChange={(e) => setLocationName(e.target.value)}
                 placeholder="e.g. Phoolbagh Square"
-                className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:ring-2 focus:ring-[#003366]"
+                className="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#003366]/20 focus:border-[#003366]"
               />
             </div>
             <div>
@@ -359,7 +361,7 @@ export const ReportIssueView: React.FC<ReportIssueViewProps> = ({
                 step="0.0001"
                 value={latitude}
                 onChange={(e) => setLatitude(parseFloat(e.target.value) || 26.2045)}
-                className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white font-mono"
+                className="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl focus:bg-white font-mono"
               />
             </div>
             <div>
@@ -371,45 +373,47 @@ export const ReportIssueView: React.FC<ReportIssueViewProps> = ({
                 step="0.0001"
                 value={longitude}
                 onChange={(e) => setLongitude(parseFloat(e.target.value) || 78.1578)}
-                className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white font-mono"
+                className="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl focus:bg-white font-mono"
               />
             </div>
           </div>
         </div>
 
         {/* 4. Photo Evidence (Optional) */}
-        <div>
-          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+        <div className="pt-2 border-t border-slate-100">
+          <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 font-mono">
             4. Photo / Evidence (Optional)
           </label>
-          <div className="border-2 border-dashed border-slate-300 rounded-xl p-4 text-center bg-slate-50 hover:bg-slate-100/70 transition-all">
+          <div className="border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center bg-slate-50/60 hover:bg-slate-50 transition-all">
             {imageUrl ? (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <img
                   src={imageUrl}
                   alt="Incident Preview"
-                  className="max-h-48 mx-auto rounded-lg object-cover border border-slate-300 shadow-xs"
+                  className="max-h-52 mx-auto rounded-xl object-cover border border-slate-300 shadow-sm"
                 />
                 <button
                   type="button"
                   onClick={() => setImageUrl(null)}
-                  className="text-xs text-rose-600 font-semibold hover:underline cursor-pointer"
+                  className="text-xs text-rose-600 font-bold hover:underline cursor-pointer"
                 >
                   Remove Photo
                 </button>
               </div>
             ) : (
-              <div className="space-y-2">
-                <Camera className="w-8 h-8 text-slate-400 mx-auto" />
-                <div className="text-xs text-slate-600">
+              <div className="space-y-2.5">
+                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto border border-slate-200 shadow-2xs">
+                  <Camera className="w-6 h-6 text-slate-500" />
+                </div>
+                <div className="text-xs text-slate-600 font-medium">
                   Attach photo of smoke, fire, or emission plume
                 </div>
                 <button
                   type="button"
                   onClick={handleSimulatePhoto}
-                  className="px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer shadow-2xs"
+                  className="px-4 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 cursor-pointer shadow-2xs transition-all"
                 >
-                  + Attach Sample Verification Photo
+                  + Attach Verification Sample Image
                 </button>
               </div>
             )}
@@ -417,49 +421,49 @@ export const ReportIssueView: React.FC<ReportIssueViewProps> = ({
         </div>
 
         {/* 5. Citizen Contact Details */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-slate-200">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-slate-100">
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+            <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-mono">
               Your Name (Optional)
             </label>
             <div className="relative">
-              <User className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+              <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-2.5" />
               <input
                 type="text"
                 value={citizenName}
                 onChange={(e) => setCitizenName(e.target.value)}
                 placeholder="e.g. Ramesh Sharma"
-                className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white"
+                className="w-full pl-10 pr-3.5 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#003366]/20 focus:border-[#003366]"
               />
             </div>
           </div>
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+            <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-mono">
               Mobile Number (For updates)
             </label>
             <div className="relative">
-              <Phone className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+              <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-2.5" />
               <input
                 type="tel"
                 value={citizenContact}
                 onChange={(e) => setCitizenContact(e.target.value)}
                 placeholder="e.g. 9876543210"
-                className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white"
+                className="w-full pl-10 pr-3.5 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#003366]/20 focus:border-[#003366]"
               />
             </div>
           </div>
         </div>
 
         {/* Submit Button */}
-        <div className="pt-2">
+        <div className="pt-3 border-t border-slate-100">
           <button
             type="submit"
             disabled={submitting}
-            className="w-full py-3 px-4 rounded-xl bg-[#003366] text-white font-bold text-sm shadow-md hover:bg-[#002244] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+            className="w-full py-3.5 px-5 rounded-xl bg-gradient-to-r from-[#003366] to-[#0a2747] hover:from-[#002852] hover:to-[#08203b] text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
           >
             {submitting ? (
               <>
-                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                 Transmitting to Government Command Center...
               </>
             ) : (
@@ -469,8 +473,8 @@ export const ReportIssueView: React.FC<ReportIssueViewProps> = ({
               </>
             )}
           </button>
-          <div className="text-center text-[11px] text-slate-400 mt-2">
-            Protected under MP Environmental Protection Act • Real-time telemetry correlation enabled
+          <div className="text-center text-[11px] text-slate-400 mt-2 font-mono">
+            Protected under MP Environmental Protection Framework • Telemetry Correlation Enabled
           </div>
         </div>
       </form>

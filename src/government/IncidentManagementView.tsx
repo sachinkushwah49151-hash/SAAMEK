@@ -149,67 +149,73 @@ export const IncidentManagementView: React.FC<IncidentManagementViewProps> = ({
   };
 
   return (
-    <div className="space-y-4">
-      {/* Top Header & Action Controls */}
-      <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 shadow-xs">
-        <div>
-          <div className="flex items-center gap-2">
-            <AlertTriangle className="w-5 h-5 text-[#003366]" />
-            <h1 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
-              Environmental Incident & Response Management
-            </h1>
-            <span className="text-[10px] font-mono bg-sky-100 text-sky-800 border border-sky-300 px-2 py-0.5 rounded font-bold">
-              Operational Workflow
-            </span>
+    <div className="space-y-5">
+      {/* ===== HERO HEADER ===== */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0a1628] via-[#0f2744] to-[#0a1e3d] shadow-xl">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-rose-500/10 rounded-full -translate-y-1/2 translate-x-1/3 blur-3xl" />
+        <div className="relative p-6 sm:p-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="p-2 bg-rose-500/20 rounded-xl border border-rose-400/30 inline-flex">
+                  <AlertTriangle className="w-5 h-5 text-rose-400" />
+                </div>
+                <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                  Environmental Incident &amp; Response Management
+                </h1>
+                <span className="inline-flex items-center text-[11px] font-bold text-sky-300 bg-sky-500/15 border border-sky-400/30 px-3 py-1 rounded-full font-mono">
+                  Operational Workflow
+                </span>
+              </div>
+              <p className="text-sm text-slate-400 max-w-2xl leading-relaxed">
+                Track, assess, corroborate evidence, and progress environmental anomalies through verification and tactical response.
+              </p>
+            </div>
+            <div className="flex items-center gap-2.5 shrink-0">
+              <button
+                onClick={loadIncidents}
+                disabled={loading}
+                className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 text-[13px] font-semibold py-2.5 px-4 rounded-xl transition-all cursor-pointer disabled:opacity-50"
+              >
+                <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+                Refresh
+              </button>
+              <button
+                onClick={() => setShowCreateModal(true)}
+                className="flex items-center gap-2 bg-sky-500 hover:bg-sky-400 text-white text-[13px] font-bold py-2.5 px-5 rounded-xl transition-all cursor-pointer shadow-lg"
+              >
+                <Plus className="w-4 h-4" />
+                Register Incident
+              </button>
+            </div>
           </div>
-          <p className="text-xs text-slate-500 mt-1">
-            Track, assess, corroborate evidence, and progress environmental anomalies through verification and tactical response.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <button
-            onClick={loadIncidents}
-            disabled={loading}
-            className="px-3.5 py-2 text-xs font-bold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg flex items-center gap-1.5 cursor-pointer shadow-2xs transition-all disabled:opacity-50"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
-            <span>Refresh</span>
-          </button>
-          <button
-            onClick={() => setShowCreateModal(true)}
-            className="px-4 py-2 text-xs font-bold text-white bg-[#003366] hover:bg-[#002244] rounded-lg flex items-center gap-1.5 cursor-pointer shadow-xs transition-all"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Register Incident</span>
-          </button>
         </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white p-3.5 rounded-xl border border-slate-200 space-y-3 shadow-xs">
+      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
-          <div className="md:col-span-5 relative">
+          <div className="md:col-span-4 relative">
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
             <input
               type="text"
               placeholder="Search incident ID, title, jurisdiction..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:ring-1 focus:ring-sky-500 focus:outline-hidden"
+              className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-[13px] focus:ring-2 focus:ring-sky-500/30 focus:border-sky-400 focus:outline-none transition-all"
             />
           </div>
 
-          <div className="md:col-span-4 flex items-center gap-2 overflow-x-auto">
-            <span className="text-xs font-bold text-slate-500 whitespace-nowrap">Status:</span>
+          <div className="md:col-span-5 flex items-center gap-1.5 flex-wrap">
+            <span className="text-[11px] font-bold text-slate-500 whitespace-nowrap mr-1">Status:</span>
             {['all', 'detected', 'verified', 'investigating', 'response_initiated', 'resolved'].map((st) => (
               <button
                 key={st}
                 onClick={() => setStatusFilter(st)}
-                className={`px-2.5 py-1 text-[11px] rounded-md font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                className={`px-2.5 py-1 text-[11px] rounded-full font-bold whitespace-nowrap transition-all cursor-pointer border ${
                   statusFilter === st
-                    ? 'bg-[#003366] text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    ? 'bg-[#003366] text-white border-[#003366] shadow-sm'
+                    : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
                 }`}
               >
                 {st === 'all' ? 'All' : st.replace('_', ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
@@ -217,103 +223,119 @@ export const IncidentManagementView: React.FC<IncidentManagementViewProps> = ({
             ))}
           </div>
 
-          <div className="md:col-span-3 flex items-center gap-2 justify-end">
-            <span className="text-xs font-bold text-slate-500 whitespace-nowrap">Severity:</span>
-            {['all', 'critical', 'high', 'medium', 'low'].map((sev) => (
-              <button
-                key={sev}
-                onClick={() => setSeverityFilter(sev)}
-                className={`px-2 py-1 text-[11px] rounded-md font-semibold capitalize transition-all cursor-pointer ${
-                  severityFilter === sev
-                    ? 'bg-slate-900 text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                }`}
-              >
-                {sev}
-              </button>
-            ))}
+          <div className="md:col-span-3 flex items-center gap-1.5 flex-wrap justify-end">
+            <span className="text-[11px] font-bold text-slate-500 whitespace-nowrap mr-1">Severity:</span>
+            {['all', 'critical', 'high', 'medium', 'low'].map((sev) => {
+              const activeColor = sev === 'critical' ? 'bg-rose-600 border-rose-600 text-white' :
+                sev === 'high' ? 'bg-amber-500 border-amber-500 text-white' :
+                sev === 'medium' ? 'bg-sky-600 border-sky-600 text-white' :
+                sev === 'low' ? 'bg-emerald-600 border-emerald-600 text-white' :
+                'bg-slate-800 border-slate-800 text-white';
+              return (
+                <button
+                  key={sev}
+                  onClick={() => setSeverityFilter(sev)}
+                  className={`px-2.5 py-1 text-[11px] rounded-full font-bold capitalize transition-all cursor-pointer border ${
+                    severityFilter === sev
+                      ? activeColor
+                      : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+                  }`}
+                >
+                  {sev}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
 
-      {/* Incidents Table / Cards List */}
-      <div className="space-y-2.5">
+      {/* Incidents List */}
+      <div className="space-y-3">
         {filteredIncidents.length > 0 ? (
-          filteredIncidents.map((inc) => (
-            <div
-              key={inc.id}
-              onClick={() => setSelectedIncident(inc)}
-              className="bg-white border border-slate-200 hover:border-[#003366]/60 rounded-xl p-4 transition-all cursor-pointer hover:shadow-md space-y-3"
-            >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-mono font-bold text-sky-900 bg-sky-50 border border-sky-200 px-2 py-0.5 rounded">
-                    {inc.incident_id}
-                  </span>
-                  <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${getSeverityBadge(inc.severity)}`}>
-                    {inc.severity} Severity
-                  </span>
-                  <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${getStatusBadge(inc.status)}`}>
-                    {inc.status.replace(/_/g, ' ')}
-                  </span>
-                  {inc.is_test_data && (
-                    <span className="text-[9px] font-bold uppercase tracking-wider bg-purple-100 text-purple-800 border border-purple-300 px-1.5 py-0.5 rounded font-mono">
-                      [DEMO TEST]
+          filteredIncidents.map((inc) => {
+            const severityBorderColor =
+              inc.severity === 'critical' ? 'border-l-rose-600' :
+              inc.severity === 'high' ? 'border-l-amber-500' :
+              inc.severity === 'medium' ? 'border-l-sky-500' :
+              'border-l-emerald-500';
+            return (
+              <div
+                key={inc.id}
+                onClick={() => setSelectedIncident(inc)}
+                className={`bg-white border border-slate-200 border-l-4 ${severityBorderColor} hover:border-slate-300 rounded-2xl p-5 transition-all cursor-pointer hover:shadow-md group`}
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-[11px] font-mono font-bold text-[#003366] bg-sky-50 border border-sky-200 px-2 py-0.5 rounded-md">
+                      {inc.incident_id}
                     </span>
-                  )}
-                </div>
+                    <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${getSeverityBadge(inc.severity)}`}>
+                      {inc.severity} Severity
+                    </span>
+                    <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${getStatusBadge(inc.status)}`}>
+                      {inc.status.replace(/_/g, ' ')}
+                    </span>
+                    {inc.is_test_data && (
+                      <span className="text-[9px] font-bold uppercase tracking-wider bg-purple-100 text-purple-800 border border-purple-300 px-1.5 py-0.5 rounded-full font-mono">
+                        [DEMO TEST]
+                      </span>
+                    )}
+                  </div>
 
-                <div className="flex items-center gap-3 text-xs text-slate-500 font-mono">
-                  <span className="flex items-center gap-1">
+                  <div className="flex items-center gap-1.5 text-[11px] text-slate-500 font-mono">
                     <Clock className="w-3.5 h-3.5 text-slate-400" />
                     {formatTimestamp(inc.detected_at)}
-                  </span>
+                  </div>
                 </div>
-              </div>
 
-              <div>
-                <h3 className="font-bold text-sm text-slate-900 leading-snug">{inc.title}</h3>
-                <p className="text-xs text-slate-600 mt-1 line-clamp-2">{inc.description}</p>
-              </div>
+                <div className="mb-3">
+                  <h3 className="font-bold text-[14px] text-slate-900 leading-snug group-hover:text-[#003366] transition-colors">{inc.title}</h3>
+                  <p className="text-[12px] text-slate-500 mt-1 line-clamp-2 leading-relaxed">{inc.description}</p>
+                </div>
 
-              {/* Multi-source Indicators Strip */}
-              <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100 text-xs">
-                <div className="flex flex-wrap items-center gap-3 text-slate-600">
-                  <span className="flex items-center gap-1 text-[11px]">
-                    <MapPin className="w-3.5 h-3.5 text-rose-500" />
-                    <strong>{inc.location_name}</strong>
-                  </span>
-                  {inc.pm25_value != null && (
-                    <span className="flex items-center gap-1 text-[11px] font-mono text-sky-900">
-                      <Radio className="w-3 h-3 text-sky-600" />
-                      PM2.5: <strong>{inc.pm25_value} µg/m³</strong>
+                {/* Multi-source Indicators Strip */}
+                <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-slate-100">
+                  <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-600">
+                    <span className="flex items-center gap-1.5">
+                      <MapPin className="w-3.5 h-3.5 text-rose-500" />
+                      <strong className="text-slate-700">{inc.location_name}</strong>
                     </span>
-                  )}
-                  {inc.wind_cardinal && (
-                    <span className="flex items-center gap-1 text-[11px] font-mono text-slate-700">
-                      <Wind className="w-3 h-3 text-sky-600" />
-                      Vector: {inc.wind_cardinal} @ {inc.wind_speed} km/h
+                    {inc.pm25_value != null && (
+                      <span className="flex items-center gap-1 font-mono text-sky-800 bg-sky-50 px-2 py-0.5 rounded-full border border-sky-100">
+                        <Radio className="w-3 h-3 text-sky-500" />
+                        PM2.5: <strong>{inc.pm25_value} µg/m³</strong>
+                      </span>
+                    )}
+                    {inc.wind_cardinal && (
+                      <span className="flex items-center gap-1 font-mono text-slate-600">
+                        <Wind className="w-3 h-3 text-sky-500" />
+                        {inc.wind_cardinal} @ {inc.wind_speed} km/h
+                      </span>
+                    )}
+                    <span className="font-mono text-slate-500 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200">
+                      {inc.evidence_items.length} Signal{inc.evidence_items.length !== 1 ? 's' : ''} Corroborated
                     </span>
-                  )}
-                  <span className="text-[11px] font-mono text-slate-500 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">
-                    {inc.evidence_items.length} Corroborated Signals
-                  </span>
-                </div>
+                  </div>
 
-                <div className="flex items-center gap-1 font-bold text-xs text-[#003366]">
-                  <span>Inspect Response Details</span>
-                  <ChevronRight className="w-4 h-4" />
+                  <div className="flex items-center gap-1 font-bold text-[12px] text-[#003366] group-hover:text-sky-700 transition-colors">
+                    Inspect Details
+                    <ChevronRight className="w-4 h-4" />
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
+            );
+          })
         ) : (
-          <div className="bg-white p-12 rounded-xl border border-slate-200 text-center space-y-3 shadow-xs">
-            <AlertTriangle className="w-10 h-10 text-slate-400 mx-auto" />
-            <h3 className="font-bold text-sm text-slate-800">No Active Incidents Detected</h3>
-            <p className="text-xs text-slate-500 max-w-md mx-auto">
-              There are currently no active environmental incidents matching the selected filters in the Gwalior jurisdiction.
-            </p>
+          <div className="bg-white p-16 rounded-2xl border border-slate-200 text-center space-y-4 shadow-sm">
+            <div className="w-14 h-14 bg-slate-50 rounded-full flex items-center justify-center mx-auto border border-slate-200">
+              <AlertTriangle className="w-7 h-7 text-slate-300" />
+            </div>
+            <div>
+              <h3 className="font-bold text-[15px] text-slate-700">No Active Incidents Detected</h3>
+              <p className="text-[12px] text-slate-400 max-w-md mx-auto mt-1 leading-relaxed">
+                There are currently no active environmental incidents matching the selected filters in the Gwalior jurisdiction.
+              </p>
+            </div>
           </div>
         )}
       </div>
