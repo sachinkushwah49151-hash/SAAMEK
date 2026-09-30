@@ -31,6 +31,7 @@ import {
   FileCheck2,
 } from 'lucide-react';
 import { formatTimestamp } from '../services/saamekBackendService';
+import { API_BASE_URL } from '../config/apiConfig';
 
 // ─── Formatters ───────────────────────────────────────────────────────────────
 
@@ -314,7 +315,7 @@ export const GovCleanEnvironmentalMap: React.FC<GovCleanEnvironmentalMapProps> =
             <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
             <div>
               <strong>SAAMEK Backend Status:</strong>{' '}
-              {stations.errorMessage || fires.errorMessage || weather.errorMessage || 'Unable to connect to SAAMEK backend on http://localhost:8000.'}
+              {stations.errorMessage || fires.errorMessage || weather.errorMessage || `Unable to connect to SAAMEK backend (${API_BASE_URL}).`}
             </div>
           </div>
         )}

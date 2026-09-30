@@ -50,7 +50,7 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# CORS Middleware — allow all common Vite dev ports
+# CORS Middleware — allow local dev ports and production Vercel frontend
 allowed_origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
@@ -60,13 +60,17 @@ allowed_origins = [
     "http://127.0.0.1:5175",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://saamek.vercel.app",
+    "http://saamek.vercel.app",
 ]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 # Register API routers under /api
