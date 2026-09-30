@@ -30,6 +30,19 @@ async def lifespan(app: FastAPI):
         # Seed default starting operational baseline if clean
         with SessionLocal() as db:
             IncidentService.seed_initial_operational_data_if_empty(db)
+
+        # Auto-sync environmental telemetry on startup (Render production)
+        # Only runs when OPENAQ_API_KEY is configured — skipped silently in local dev
+        if settings.OPENAQ_API_KEY:
+            try:
+                from app.services.ingestion_service import IngestionService
+                with SessionLocal() as sync_db:
+                    IngestionService().sync_gwalior(sync_db)
+                logger.info("Startup environmental sync completed successfully.")
+            except Exception as sync_err:
+                logger.warning(f"Startup environmental sync failed (non-fatal): {sync_err}")
+        else:
+            logger.info("OPENAQ_API_KEY not configured — skipping startup environmental sync.")
     except Exception as e:
         logger.warning(
             f"Database initialization encountered an alert: {e}."
